@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>MD5 API</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        $(function(){
+            $('.example').click(function(){
+                var exampleLength = 2 + Math.round(Math.random() * 2),
+                    example = '';
+
+                for (var i = 0; i < exampleLength; i++) {
+                    example+= String.fromCharCode(Math.round(Math.random() * 26) + 97);
+                }
+
+                $('input').val(example);
+            });
+
+            $('.calculate').click(function(){
+                console.log(1);
+                $.ajax({
+                    url: 'md5api.php/calculate',
+                    method: 'GET',
+                    data: JSON.stringify({str: $('input').val()}),
+                    dataType: 'JSON',
+                    success: function(data){
+                        $('.result').html(`MD5( ${data.str} ) = <strong>${data.md5}</strong>`);
+                    }
+                });
+            });
+
+            $('.crack').click(function(){
+                console.log(1);
+                $.ajax({
+                    url: 'md5api.php/crack',
+                    method: 'GET',
+                    data: JSON.stringify({md5: $('input').val()}),
+                    dataType: 'JSON',
+                    success: function(data){
+                        if ('error' in data) {
+                            $('.result').html(`<div class="alert alert-warning">${data.error}</div>`);
+                        } else {
+                            $('.result').html(`MD5( <strong>${data.str}</strong> ) = ${data.md5}`);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>MD5 API</h1>
+        <p>This is a small example what maight be done with qAPI.</p>
+
+        <div class="form-group">
+            <div class="input-group">
+                <input type="text" class="form-control">
+                <div class="input-group-btn">
+                    <div class="btn btn-default calculate">Calculate</div>
+                    <div class="btn btn-default crack">Crack</div>
+                    <div class="btn btn-info example">Example</div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group result"></div>
+    </div>
+</body>
+</html>
