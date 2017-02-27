@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Echo API</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        $(function(){
+            $('.send').click(function(){
+                $.ajax({
+                    url: 'echo-api.php/echo',
+                    method: 'POST',
+                    data: JSON.stringify({text: $('input').val()}),
+                    dataType: 'JSON',
+
+                    success: function(data){
+                        $('.result').html(JSON.stringify(data));
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Echo API</h1>
+        <p>Probably simplest example.</p>
+
+        <div class="form-group">
+            <div class="input-group">
+                <input type="text" class="form-control">
+                <div class="input-group-btn">
+                    <div class="btn btn-default send">Send</div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group result"></div>
+    </div>
+</body>
+</html>
